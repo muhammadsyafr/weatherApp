@@ -8,6 +8,11 @@ import {
   IonToolbar,
   IonButton,
   IonAlert,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonCardContent,
 } from "@ionic/react";
 import "./Tab3.css";
 import { fetchData, convertDate } from "../services";
@@ -26,12 +31,31 @@ const DataWeather = (props: any) => {
 
   return (
     <div>
-      <h1>{props.data.dt}</h1>
-      <h2>{props.data.weather[0].icon}</h2>
-      <h2>{convertDate(props.data.dt_txt)}</h2>
-      <IonButton color="secondary" onClick={setToLocalStorage}>
-        Add to Favorite
-      </IonButton>
+      <IonContent fullscreen className="ion-padding">
+        <IonCard>
+          <IonCardHeader>
+            <IonCardSubtitle>{props.data.dt}</IonCardSubtitle>
+            <IonCardTitle>{convertDate(props.data.dt_txt)}</IonCardTitle>
+          </IonCardHeader>
+
+          <IonCardContent className="ion-text-center">
+          <img
+            src={`http://openweathermap.org/img/wn/${props.data.weather[0].icon}@2x.png`}
+            alt={props.data.weather[0].icon}
+            style={{ width: "180px" }}
+          />
+          </IonCardContent>
+          <IonButton
+            fill="clear"
+            color="secondary"
+            onClick={setToLocalStorage}
+            expand="full"
+          >
+            Add to Favorite
+          </IonButton>
+        </IonCard>
+      </IonContent>
+
       {/* Alert when Success Add to Localstorage */}
       <IonAlert
         isOpen={showAlert1}
@@ -55,8 +79,6 @@ const Tab3: React.FC = (props: any) => {
         city: res.city,
       };
       setWeatherMatch(arrWeather.list);
-
-      console.log(localStorage.getItem("favorite"));
     });
   }, []);
 

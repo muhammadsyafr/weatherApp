@@ -17,10 +17,13 @@ import { key } from "ionicons/icons";
 
 const Tab2: React.FC = () => {
   useEffect(() => {
-    // document.title = "Forecast"
     fetchData("forecast")
       .then((res) => {
         setForecast(res.list);
+        setCities(res.city.name);
+        setTimeout(() => {
+          document.title = "Current Weather " + res.city.name;
+        }, 1000);
       })
       .then((res) => {
         document.title = "Forecast";
@@ -28,6 +31,7 @@ const Tab2: React.FC = () => {
   }, [document.title]);
 
   const [forecast, setForecast] = useState<any>([]);
+  const [cities, setCities] = useState<any>([]);
 
   const ListForecast = (data: any) => {
     return (
@@ -58,7 +62,7 @@ const Tab2: React.FC = () => {
     <IonPage>
       <IonHeader mode="ios">
         <IonToolbar>
-          <IonTitle>Forecast</IonTitle>
+          <IonTitle>Forecast {cities}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>

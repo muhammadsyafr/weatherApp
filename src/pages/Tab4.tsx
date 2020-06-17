@@ -11,7 +11,7 @@ import {
   IonText,
 } from "@ionic/react";
 import "./Tab3.css";
-import { fetchData, convertDate } from "../services";
+import { convertDate } from "../services";
 
 const Tab4: React.FC = (props: any) => {
   const [favorite, setFavorite] = useState<any>();
