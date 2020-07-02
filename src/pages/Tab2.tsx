@@ -17,17 +17,16 @@ import { key } from "ionicons/icons";
 
 const Tab2: React.FC = () => {
   useEffect(() => {
-    fetchData("forecast")
+    let getCities: any = localStorage.getItem("cities")
+   
+    fetchData("forecast", getCities)
       .then((res) => {
         setForecast(res.list);
         setCities(res.city.name);
         setTimeout(() => {
-          document.title = "Current Weather " + res.city.name;
+          document.title = "Forecast Weather " + res.city.name;
         }, 1000);
       })
-      .then((res) => {
-        document.title = "Forecast";
-      });
   }, [document.title]);
 
   const [forecast, setForecast] = useState<any>([]);

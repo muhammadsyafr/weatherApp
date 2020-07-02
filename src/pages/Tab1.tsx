@@ -50,9 +50,10 @@ const Tab1: React.FC = () => {
   const [weather, setWeather] = useState<any>([]);
   const [realtime, setRealtime] = useState<any>([]);
   const [text, setText] = useState<string>();
+  let getCities: any = localStorage.getItem("cities")
 
   useEffect(() => {
-    fetchData('', text).then((res: any) => {
+    fetchData('', getCities).then((res: any) => {
       setWeather(res);
       setTimeout(() => {
         document.title = "Current Weather";
@@ -66,6 +67,11 @@ const Tab1: React.FC = () => {
     }, 1000);
   });
 
+  const setCities = (cities:any) => {
+    window.localStorage.setItem("cities", cities);
+    setText(cities)
+  }
+
   return (
     <IonPage>
       <IonHeader mode="ios">
@@ -78,7 +84,7 @@ const Tab1: React.FC = () => {
           <h2 className="ion-60p">
             {realtime}
           </h2>
-          <IonInput placeholder={'Masukan Lokasi'} className="ion-text-capitalize" debounce={1000} mode="ios" onIonChange={e => setText(e.detail.value!)}></IonInput>
+          <IonInput placeholder={'Masukan Lokasi'} className="ion-text-capitalize" debounce={1000} mode="ios" onIonChange={e => setCities(e.detail.value!)}></IonInput>
         </div>
         <div className="container-tab1">
           <IonHeader collapse="condense">

@@ -9,24 +9,44 @@ import {
   IonAvatar,
   IonLabel,
   IonText,
+  IonFab,
+  IonFabButton,
+  IonIcon
 } from "@ionic/react";
 import "./Tab3.css";
 import { convertDate } from "../services";
+import { trash } from "ionicons/icons";
 
 const Tab4: React.FC = (props: any) => {
-  const [favorite, setFavorite] = useState<any>();
+  const [favorite, setFavorite] = useState<any>([]);
+  const [isDeleted, setIsDeleted] = useState<boolean>(false);
   useEffect(() => {
     let getFav: any = localStorage.getItem("favorite");
     const getFavJSON = JSON.parse(getFav);
-    setFavorite(getFavJSON.data);
-    // console.log(getFavJSON.data)
+    setFavorite(getFavJSON);
+    document.title = "Favorite"
+  }, [isDeleted]);
+
+  useEffect(() => {
+    let getFav: any = localStorage.getItem("favorite");
+    const getFavJSON = JSON.parse(getFav);
+    setFavorite(getFavJSON);
     document.title = "Favorite"
   }, [document.title]);
+
+  const DeleteFavorite = () => {
+    var confirmed = window.confirm("Apakah yakin ingin menghapus seluruh favorit");
+    if (confirmed == true) {
+      localStorage.removeItem('favorite');
+      setFavorite([])
+      setIsDeleted(true)
+    }
+  }
 
   const Favorite = (props: any) => {
     // const data = props.data
     return (
-      <IonItem routerLink={`/detail/${props.data.dt}`} button>
+      <IonItem button>
         <IonAvatar slot="start">
           <img
             src={`http://openweathermap.org/img/wn/${props.data.weather[0].icon}@2x.png`}
@@ -43,7 +63,7 @@ const Tab4: React.FC = (props: any) => {
           </p>
         </IonLabel>
         <IonText color="success" slot="end">
-          <p className="main-temp">{"10"}°C</p>
+          <p className="main-temp">{props.data.main.temp}°C</p>
         </IonText>
       </IonItem>
     );
@@ -57,11 +77,18 @@ const Tab4: React.FC = (props: any) => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        {/* { favorite ? favorite.map(function (value: any) {
-          return <Favorite />
-        }) : ""
-        } */}
-        {favorite ? <Favorite data={favorite} /> : "kwowkokw"}
+        { favorite ? favorite.map(function (value: any, key:number) {
+          return (
+          <div key={key}>
+            <Favorite data={value}/>
+            <IonFab vertical="bottom" horizontal="end" slot="fixed">
+              <IonFabButton onClick={DeleteFavorite} style={{position: 'fixed', right: "5%", bottom: 15}} mode="ios" color="danger">
+                <IonIcon icon={trash}></IonIcon>
+              </IonFabButton>
+            </IonFab>
+          </div>)
+        }) : <div className="ion-padding">Belum ada favorit</div>
+        }
       </IonContent>
     </IonPage>
   );

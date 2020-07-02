@@ -19,14 +19,30 @@ import { fetchData, convertDate } from "../services";
 
 const DataWeather = (props: any) => {
   const [showAlert1, setShowAlert1] = useState(false);
+  const [showAlert2, setShowAlert2] = useState(false);
 
   const setToLocalStorage = () => {
-    window.localStorage.setItem("favorite", JSON.stringify(props));
-    setShowAlert1(true);
-    // window.location.reload();
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
+    let dataArr = [];
+    let getFav: any = localStorage.getItem("favorite");
+    if (getFav === null) {
+      dataArr.push(props.data);
+      window.localStorage.setItem("favorite", JSON.stringify(dataArr));
+      setShowAlert1(true);
+    } else {
+      let parseGetFav = JSON.parse(getFav);
+    
+      // array check parseGetFav != props.data
+      const isFavoriteExist = parseGetFav.filter((v:any) => v.dt === props.data.dt && v.wind.deg === props.data.wind.deg)
+    
+      if (isFavoriteExist[0]) {
+        setShowAlert2(true);
+      } else {
+        // console.log('boleh tambah data disini');
+        dataArr.push(...parseGetFav, props.data)
+        window.localStorage.setItem("favorite", JSON.stringify(dataArr));
+        setShowAlert1(true);
+      }
+    }
   };
 
   return (
@@ -35,15 +51,18 @@ const DataWeather = (props: any) => {
         <IonCard>
           <IonCardHeader>
             <IonCardSubtitle>{props.data.dt}</IonCardSubtitle>
-            <IonCardTitle>{convertDate(props.data.dt_txt)}</IonCardTitle>
+            <IonCardTitle>{props.data.weather[0].main}</IonCardTitle>
+            <IonCardSubtitle>{convertDate(props.data.dt_txt)}</IonCardSubtitle>
           </IonCardHeader>
 
           <IonCardContent className="ion-text-center">
-          <img
-            src={`http://openweathermap.org/img/wn/${props.data.weather[0].icon}@2x.png`}
-            alt={props.data.weather[0].icon}
-            style={{ width: "180px" }}
-          />
+            <h2></h2>
+            <img
+              src={`http://openweathermap.org/img/wn/${props.data.weather[0].icon}@2x.png`}
+              alt={props.data.weather[0].icon}
+              style={{ width: "180px" }}
+            />
+            <p> ({props.data.weather[0].description})</p>
           </IonCardContent>
           <IonButton
             fill="clear"
@@ -62,8 +81,24 @@ const DataWeather = (props: any) => {
         onDidDismiss={() => setShowAlert1(false)}
         cssClass="my-custom-class"
         header={"Success"}
+        mode="ios"
         message={"Success Add to Favorite"}
-        // buttons={['Back']}
+        buttons={['Ok']}
+      />
+
+      {/* Alert if object exist in localstorage */}
+      <IonAlert
+        isOpen={showAlert2}
+        onDidDismiss={() => setShowAlert2(false)}
+        cssClass="secondary"
+        header={"Favorit Exist!"}
+        message={"Object ini <strong>sudah ada </strong>pada tab Favoritmu!"}
+        mode="ios"
+        buttons={[
+          {
+            text: 'Ok',
+          }
+        ]}
       />
     </div>
   );
@@ -72,15 +107,19 @@ const DataWeather = (props: any) => {
 const Tab3: React.FC = (props: any) => {
   const weatherId = props.match.params.id;
   const [weatherMatch, setWeatherMatch] = useState<any>([]);
+  const [cities, setCities] = useState<any>();
   useEffect(() => {
-    fetchData("forecast").then((res) => {
+    let getCities: any = localStorage.getItem("cities")
+    setCities(getCities)
+    fetchData("forecast",getCities).then((res) => {
       let arrWeather = {
         list: res.list,
         city: res.city,
       };
       setWeatherMatch(arrWeather.list);
+      document.title = "Detail";
     });
-  }, []);
+  }, []); //cities
 
   let findWeatherById = weatherMatch.find((obj: any) => obj.dt == weatherId);
 
