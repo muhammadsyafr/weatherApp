@@ -36,7 +36,7 @@ const Tab4: React.FC = (props: any) => {
 
   const DeleteFavorite = () => {
     var confirmed = window.confirm("Apakah yakin ingin menghapus seluruh favorit");
-    if (confirmed == true) {
+    if (confirmed === true) {
       localStorage.removeItem('favorite');
       setFavorite([])
       setIsDeleted(true)

@@ -47,16 +47,13 @@ const DataWeather = (props: any) => {
 
   return (
     <div>
-      <IonContent fullscreen className="ion-padding">
-        <IonCard>
+      <IonCard>
           <IonCardHeader>
-            <IonCardSubtitle>{props.data.dt}</IonCardSubtitle>
             <IonCardTitle>{props.data.weather[0].main}</IonCardTitle>
             <IonCardSubtitle>{convertDate(props.data.dt_txt)}</IonCardSubtitle>
           </IonCardHeader>
 
           <IonCardContent className="ion-text-center">
-            <h2></h2>
             <img
               src={`http://openweathermap.org/img/wn/${props.data.weather[0].icon}@2x.png`}
               alt={props.data.weather[0].icon}
@@ -73,7 +70,6 @@ const DataWeather = (props: any) => {
             Add to Favorite
           </IonButton>
         </IonCard>
-      </IonContent>
 
       {/* Alert when Success Add to Localstorage */}
       <IonAlert
@@ -121,7 +117,7 @@ const Tab3: React.FC = (props: any) => {
     });
   }, []); //cities
 
-  let findWeatherById = weatherMatch.find((obj: any) => obj.dt == weatherId);
+  let findWeatherById = weatherMatch.find((obj: any) => obj.dt === weatherId);
 
   return (
     <IonPage>
