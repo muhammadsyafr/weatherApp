@@ -61,14 +61,14 @@ const DataWeather = (props: any) => {
             />
             <p> ({props.data.weather[0].description})</p>
           </IonCardContent>
-          <IonButton
+          {/* <IonButton
             fill="clear"
             color="secondary"
             onClick={setToLocalStorage}
             expand="full"
           >
             Add to Favorite
-          </IonButton>
+          </IonButton> */}
         </IonCard>
 
       {/* Alert when Success Add to Localstorage */}
@@ -117,7 +117,7 @@ const Tab3: React.FC = (props: any) => {
     });
   }, []); //cities
 
-  let findWeatherById = weatherMatch.find((obj: any) => obj.dt === weatherId);
+  let findWeatherById = weatherMatch.find((obj: any) => obj.dt == weatherId);
 
   return (
     <IonPage>

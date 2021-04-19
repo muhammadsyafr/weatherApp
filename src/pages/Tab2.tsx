@@ -27,6 +27,7 @@ const Tab2: React.FC = () => {
           document.title = "Forecast Weather " + res.city.name;
         }, 1000);
       })
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [document.title]);
 
   const [forecast, setForecast] = useState<any>([]);

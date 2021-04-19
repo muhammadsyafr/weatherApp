@@ -25,6 +25,7 @@ const Tab4: React.FC = (props: any) => {
     const getFavJSON = JSON.parse(getFav);
     setFavorite(getFavJSON);
     document.title = "Favorite"
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDeleted]);
 
   useEffect(() => {
@@ -32,6 +33,7 @@ const Tab4: React.FC = (props: any) => {
     const getFavJSON = JSON.parse(getFav);
     setFavorite(getFavJSON);
     document.title = "Favorite"
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [document.title]);
 
   const DeleteFavorite = () => {

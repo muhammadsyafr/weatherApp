@@ -55,10 +55,7 @@ const App: React.FC = () => (
             <IonIcon icon={rainyOutline} />
             <IonLabel>Forecast</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon icon={starOutline} />
-            <IonLabel>Favorite</IonLabel>
-          </IonTabButton>
+          
         </IonTabBar>
       </IonTabs>
     </IonReactRouter>

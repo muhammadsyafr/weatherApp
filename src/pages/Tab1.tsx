@@ -59,6 +59,7 @@ const Tab1: React.FC = () => {
         document.title = "Current Weather";
       }, 1000);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [text]);
 
   useEffect(() => {
